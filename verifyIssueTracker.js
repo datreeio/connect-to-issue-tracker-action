@@ -23,7 +23,7 @@ async function main() {
     resolveWithFullResponse: true,
     json: true,
     simple: false,
-    body: {issue_tracker: 'jira', pullRequestNumber: event.number, repositoryUrl: event.repository.url, token: process.env.GITHUB_TOKEN}
+    body: {issue_tracker: 'jira', pullRequestNumber: event.number, repositoryUrl: event.repository.html_url, token: process.env.GITHUB_TOKEN}
   }
   console.log(event)
   console.log(program)
