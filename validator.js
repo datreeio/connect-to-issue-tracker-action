@@ -1,26 +1,42 @@
+const request = require('request-promise-native')
+
+const URLS = {
+  branch: 'http://gateway.datree.io/v1/policy/orb/branchname',
+  pr: 'http://gateway.datree.io/v1/policy/orb/pullrequesttitle'
+}
+
 class Validator {
-  constructor(url, type, property) {
-    this.url = url
+  constructor(type, property) {
+    this.url = URLS[property]
     this.type = type
     this.property = property
   }
 
-  validate(val) {
-    this._request({issue_tracker: this.property})
+  validate(event) {
+    let body = { issue_tracker: this.type }
+    if (this.property === 'branch') body.branch_name = event.pull_request.head.ref
+
+    else if (this.property === 'pr') {
+      body.pullRequestNumber = event.number
+      body.repositoryUrl = event.repository.html_url
+      body.token = process.env.GITHUB_TOKEN
+    }
+
+    return this._request(body)
 
 
   }
 
-  _request(params) {
+  _request(body) {
     let requestParams = {
       method: 'POST',
-      url: 'http://gateway.datree.io/v1/policy/orb/branchname',
+      url: this.url,
       resolveWithFullResponse: true,
       json: true,
       simple: false,
-      body: {issue_tracker: 'jira', branch_name: 'bla'}
+      body
     }
-
+    return request(requestParams)
   }
 }
 

@@ -1,6 +1,7 @@
 const fs = require('fs')
-const request = require('request-promise-native')
 const program = require('commander')
+
+const { Validator } = require('./validator')
 
 program
   .option('-p, --property <validationProperty>', 'The property to validate: branch name or PR title')
@@ -8,28 +9,14 @@ program
   .parse(process.argv)
 
 async function main() {
-  // let requestParams = {
-  //   method: 'POST',
-  //   url: 'http://gateway.datree.io/v1/policy/orb/branchname',
-  //   resolveWithFullResponse: true,
-  //   json: true,
-  //   simple: false,
-  //   body: {issue_tracker: 'jira', branch_name: 'bla'}
-  // }
-  const event = JSON.parse(fs.readFileSync('/github/workflow/event.json', 'utf8'))
-  let requestParams = {
-    method: 'POST',
-    url: 'http://gateway.datree.io/v1/policy/orb/pullrequesttitle',
-    resolveWithFullResponse: true,
-    json: true,
-    simple: false,
-    body: {issue_tracker: 'jira', pullRequestNumber: event.number, repositoryUrl: event.repository.html_url, token: process.env.GITHUB_TOKEN}
-  }
-  console.log(event)
-  console.log(program)
-  const res = await request(requestParams)
 
-  return res
+  const event = JSON.parse(fs.readFileSync('/github/workflow/event.json', 'utf8'))
+  const validator = new Validator(program.type, program.property)
+
+  const res = await validator.validate(event)
+
+  if (res.body.passed) return
+  else throw new Error(`${program.property} doesn't reference a valid ${program.type} ticket`)
 }
 
 if (require.main === module) {

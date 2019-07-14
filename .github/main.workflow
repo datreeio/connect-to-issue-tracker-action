@@ -6,5 +6,6 @@ workflow "test flow" {
 
 action "test action" {
   uses = "./"
+  args = ["-p", "branch", "-t", "jira"]
   secrets = ["GITHUB_TOKEN"]
 }
