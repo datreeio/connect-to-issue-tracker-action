@@ -2,4 +2,4 @@
 ls -sla
 cd /
 npm ci
-node verifyIssueTracker.js
+node verifyIssueTracker.js -t jira -i $*
