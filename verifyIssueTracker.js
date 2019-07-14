@@ -8,15 +8,23 @@ program
   .parse(process.argv)
 
 async function main() {
+  // let requestParams = {
+  //   method: 'POST',
+  //   url: 'http://gateway.datree.io/v1/policy/orb/branchname',
+  //   resolveWithFullResponse: true,
+  //   json: true,
+  //   simple: false,
+  //   body: {issue_tracker: 'jira', branch_name: 'bla'}
+  // }
+  const event = JSON.parse(fs.readFileSync('/github/workflow/event.json', 'utf8'))
   let requestParams = {
     method: 'POST',
-    url: 'http://gateway.datree.io/v1/policy/orb/branchname',
+    url: 'http://gateway.datree.io/v1/policy/orb/pullrequesttitle',
     resolveWithFullResponse: true,
     json: true,
     simple: false,
-    body: {issue_tracker: 'jira', branch_name: 'bla'}
+    body: {issue_tracker: 'jira', pullRequestNumber: event.number, repositoryUrl: event.repository.url, token: process.env.GITHUB_TOKEN}
   }
-  const event = JSON.parse(fs.readFileSync('/github/workflow/event.json', 'utf8'))
   console.log(event)
   console.log(program)
   const res = await request(requestParams)
