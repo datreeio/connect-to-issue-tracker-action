@@ -15,8 +15,8 @@ async function main() {
 
   const res = await validator.validate(event)
 
-  if (res.body.passed) return `Congrats!! your ${program.property} references a valid ${program.type} ticket!`
-  else throw new Error(`${program.property} doesn't reference a valid ${program.type} ticket`)
+  if (res.body.passed) return `\n\nCongrats!! your ${program.property} references a valid ${program.type} ticket!\n\n`
+  else throw new Error(`\n\n${program.property} doesn't reference a valid ${program.type} ticket\n\n`)
 }
 
 if (require.main === module) {
