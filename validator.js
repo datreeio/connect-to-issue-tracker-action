@@ -1,8 +1,7 @@
 const request = require('request-promise-native')
 
 const URLS = {
-  branch: 'http://gateway.datree.io/v1/policy/orb/branchname',
-  pr: 'http://gateway.datree.io/v1/policy/orb/pullrequesttitle'
+  branch: 'http://gateway.datree.io/v1/policy/orb/branchname'
 }
 
 class Validator {
@@ -14,17 +13,11 @@ class Validator {
 
   validate(event) {
     let body = { issue_tracker: this.type }
-    if (this.property === 'branch') body.branch_name = event.pull_request.head.ref
 
-    else if (this.property === 'pr') {
-      body.pullRequestNumber = event.number
-      body.repositoryUrl = event.repository.html_url
-      body.token = process.env.GITHUB_TOKEN
-    }
+    if (this.property === 'branch') body.branch_name = event.pull_request.head.ref
+    else throw new Error(`Property ${this.property} not supported`)
 
     return this._request(body)
-
-
   }
 
   _request(body) {
