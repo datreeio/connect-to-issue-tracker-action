@@ -15,18 +15,18 @@ async function main() {
 
   const res = await validator.validate(event)
 
-  if (res.body.passed) return
+  if (res.body.passed) return `Congrats!! your ${program.property} references a valid ${program.type} ticket!`
   else throw new Error(`${program.property} doesn't reference a valid ${program.type} ticket`)
 }
 
 if (require.main === module) {
   main()
     .then(res => {
-      console.log({ res })
+      console.log(res)
       process.exitCode = 0
     })
     .catch(err => {
-      console.log({ err })
+      console.log(err.message)
       process.exitCode = 1
     })
 }
