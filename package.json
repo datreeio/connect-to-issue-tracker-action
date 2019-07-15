@@ -1,0 +1,26 @@
+{
+  "name": "connect-to-issue-tracker-action",
+  "version": "1.0.0",
+  "description": "verify that the branch name references an issue tracker(jira ticket)",
+  "main": "verifyIssueTracker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node verifyIssueTracker.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/datreeio/connect-to-issue-tracker-action.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/datreeio/connect-to-issue-tracker-action/issues"
+  },
+  "homepage": "https://github.com/datreeio/connect-to-issue-tracker-action#readme",
+  "dependencies": {
+    "commander": "^2.20.0",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7"
+  }
+}
